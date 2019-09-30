@@ -4,69 +4,6 @@ import { bindActionCreators } from 'redux';
 //#region reducer
 const initialState = {};
 
-function hideModal() {
-    return {
-        icon: '',
-        className: '',
-        message: '',
-        showModal: false
-    };
-}
-
-function success(state, action) {
-    return { ...state, status: hideModal() };
-}
-
-function proccess(state, action) {
-
-    return {
-        ...state, status: {
-            icon: 'fa fa-cog fa-2x fa-spin fa-fw',
-            className: 'alert-info',
-            message: (action.payload && action.payload.message) ?
-                action.payload.message : 'Processando, aguarde.',
-            showModal: true
-        }
-    };
-}
-
-function failed(state, action) {
-    let retorno = { ...state };
-    try {
-        const jsonError = JSON.parse(action.payload.message);
-        retorno = {
-            ...state, status: {
-                icon: 'fa fa-close fa-2x',
-                className: 'alert-danger',
-                message: (jsonError && jsonError.message) ?
-                    jsonError.message : 'Erro na solicitação. Consulte o log para detalhes.',
-                autohide: true,
-                showModal: true
-            }
-        };
-    } catch (error) {
-        let mensagem;
-        if (action.payload && action.payload.message) {
-            mensagem = (action.payload.message === 'Failed to fetch') ?
-                'Falha na conexão' : action.payload.message;
-        } else {
-            mensagem = 'Erro na solicitação. Consulte o log para detalhes.';
-        }
-
-        retorno = {
-            ...state, status: {
-                icon: 'fa fa-close fa-2x',
-                className: 'alert-danger',
-                message: mensagem,
-                autohide: true,
-                showModal: true
-            }
-        };
-    }
-
-    return retorno;
-}
-
 export function genericReducer(state = initialState, action) {
     switch (action.type) {
         case 'set_value':
@@ -75,15 +12,9 @@ export function genericReducer(state = initialState, action) {
             if (action.payload.treatment) {
                 values[action.payload.key] = action.payload.treatment(action.payload.value, state, action);
             }
-            return { ...state, ...values };
+            return {...state, ...values };
         case 'clear_values':
             return initialState;
-        case 'fetch_process':
-            return proccess(state, action);
-        case 'fetch_failed':
-            return failed(state, action);
-        case 'fetch_success':
-            return success(state, action);
         default:
             return state;
     }
@@ -102,22 +33,18 @@ export function clearValues() {
     return { type: 'clear_values' };
 }
 
-const request = (method, api, endpoint, returnReduceKey, param, treatment, callback) => (
-    [
-        { type: 'fetch_process' },
-        {
-            type: 'request',
-            request: {
-                method,
-                api,
-                endpoint,
-                returnReduceKey,
-                param,
-                treatment,
-                callback
-            }
-        }
-    ]);
+const request = (method, api, endpoint, returnReduceKey, param, treatment, callback) => ({
+    type: 'request',
+    request: {
+        method,
+        api,
+        endpoint,
+        returnReduceKey,
+        param,
+        treatment,
+        callback
+    }
+});
 
 export function post(api, endpoint, returnReduceKey, { param, treatment, callback } = {}) {
     return request('POST', api, endpoint, returnReduceKey, param, treatment, callback)
@@ -159,7 +86,7 @@ const selects = reducerKeys => state => {
 
 export function bindDefault(connect) {
     return (...reducerKeys) => {
-        const selectDispatch = dispatch => bindActionCreators({ ...Actions }, dispatch);
+        const selectDispatch = dispatch => bindActionCreators({...Actions }, dispatch);
         return (formComponent) => connect(selects(reducerKeys), selectDispatch)(formComponent);
     };
 }
@@ -167,7 +94,7 @@ export function bindDefault(connect) {
 export function bindWithActions(connect) {
     return (...reducerKeys) => {
         return (...actions) => {
-            const selectDispatch = dispatch => bindActionCreators({ ...Actions, ...actions }, dispatch);
+            const selectDispatch = dispatch => bindActionCreators({...Actions, ...actions }, dispatch);
             return (formComponent) => connect(selects(reducerKeys), selectDispatch)(formComponent);
         }
     };
@@ -179,7 +106,7 @@ export function bindReduxForm(connect) {
             let _actions = {};
             actions.forEach(action => _actions[JSON.stringify(_actions) === "{}" ? 'onSubmit' : action.name] = action);
             const selectDispatch = dispatch => {
-                _actions = { ..._actions, ...Actions };
+                _actions = {..._actions, ...Actions };
                 bindActionCreators(_actions, dispatch);
             };
             return (validate = undefined, warns = undefined) => {
@@ -202,4 +129,3 @@ export function bindReduxForm(connect) {
 //#region sagas
 export const SAGA_REQUEST = 'request';
 //#endregion
-

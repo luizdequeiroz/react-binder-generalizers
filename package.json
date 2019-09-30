@@ -1,25 +1,25 @@
 {
-  "name": "react-binder-generalizers",
-  "author": "Luiz de Queiroz",
-  "version": "1.0.0-beta",
-  "description": "Biblioteca para generalização de reducers e sagas, com binders de conexão com as middlewares Redux, Saga, Redux-Form, Redux-Multi e Devtools.",
-  "main": "dist/index.js",
-  "files": [
-    "./dist"
-  ],
-  "private": false,
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "dependencies": {
-    "redux": "^4.0.4",
-    "redux-form": "^8.2.5"
-  },
-  "peerDependencies": {
-    "redux": "^4.0.4",
-    "redux-form": "^8.2.5"
-  }
+    "name": "react-binder-generalizers",
+    "author": "Luiz de Queiroz",
+    "version": "1.0.0-beta1",
+    "description": "Biblioteca para generalização de reducers e sagas, com binders de conexão com as middlewares Redux, Saga, Redux-Form, Redux-Multi e Devtools.",
+    "main": "dist/index.js",
+    "files": [
+        "./dist"
+    ],
+    "private": false,
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "dependencies": {
+        "redux": "^4.0.4",
+        "redux-form": "^8.2.5"
+    },
+    "peerDependencies": {
+        "redux": "^4.0.4",
+        "redux-form": "^8.2.5"
+    }
 }
