@@ -78,10 +78,9 @@ const Actions = {
 //#endregion
 
 //#region binders
-const selects = (reducerKeys, form, ...formValues) => state => {
-    let reducers = {
-        formValues: form && formValueSelector(form)(state, formValues)
-    };
+const selects = (reducerKeys, form, formValues) => state => {
+    let reducers = { formValues: {} };
+    if (formValues) formValues.forEach(formValue => reducers.formValues[formValue] = form && formValueSelector(form)(state, formValue));
     reducerKeys.forEach(key => reducers[key] = state.reducers[key]);
     return reducers;
 };

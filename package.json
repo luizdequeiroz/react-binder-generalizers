@@ -1,7 +1,7 @@
 {
     "name": "react-binder-generalizers",
     "author": "Luiz de Queiroz",
-    "version": "1.0.0-beta2",
+    "version": "1.0.0-beta3",
     "description": "Biblioteca para generalização de reducers e sagas, com binders de conexão com as middlewares Redux, Saga, Redux-Form, Redux-Multi e Devtools.",
     "main": "dist/index.js",
     "files": [
